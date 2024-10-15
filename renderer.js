@@ -1,23 +1,23 @@
 const { ipcRenderer } = require('electron');
 
-let originalData = [];
+let currentData = []; // Содержит отредактированные данные
 
 document.getElementById('openFile').addEventListener('click', async () => {
     const data = await ipcRenderer.invoke('open-file-dialog');
     if (!data) return;
 
-    originalData = [...data]; // Сохраняем оригинальные данные для перезагрузки
+    currentData = [...data]; // Сохраняем текущие данные для редактирования
     renderTable(data);
     document.getElementById('reloadTable').disabled = false; // Активируем кнопку перезагрузки
     document.getElementById('saveFile').disabled = false;    // Активируем кнопку сохранения
 });
 
 document.getElementById('reloadTable').addEventListener('click', () => {
-    renderTable(originalData); // Перезагружаем таблицу с исходными данными
+    renderTable(currentData); // Перезагружаем таблицу с текущими данными
 });
 
 document.getElementById('saveFile').addEventListener('click', async () => {
-    await ipcRenderer.invoke('save-file-dialog', originalData); // Сохранение файла
+    await ipcRenderer.invoke('save-file-dialog', currentData); // Сохранение отредактированных данных
 });
 
 function renderTable(data) {
@@ -47,8 +47,8 @@ function renderTable(data) {
 
         // Добавляем обработчик клика для удаления строки
         tr.addEventListener('click', () => {
-            data.splice(rowIndex, 1); // Удаляем строку из массива
-            renderTable(data); // Перерисовываем таблицу
+            currentData.splice(rowIndex, 1); // Удаляем строку из текущего массива
+            renderTable(currentData); // Перерисовываем таблицу
         });
 
         tableBody.appendChild(tr);
