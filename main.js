@@ -1,6 +1,7 @@
 const { app, BrowserWindow, ipcMain, dialog } = require('electron');
 const fs = require('fs');
 const csv = require('csv-parser');
+const { Parser } = require('json2csv');
 
 let mainWindow;
 
@@ -39,4 +40,23 @@ ipcMain.handle('open-file-dialog', async () => {
                 resolve(results);
             });
     });
+});
+
+ipcMain.handle('save-file-dialog', async (event, data) => {
+    const { canceled, filePath } = await dialog.showSaveDialog({
+        title: 'Save CSV File',
+        defaultPath: 'modified_table.csv',
+        filters: [{ name: 'CSV Files', extensions: ['csv'] }],
+    });
+
+    if (canceled) return;
+
+    try {
+        const json2csvParser = new Parser();
+        const csvData = json2csvParser.parse(data);
+
+        fs.writeFileSync(filePath, csvData);
+    } catch (error) {
+        console.error('Error saving file:', error);
+    }
 });

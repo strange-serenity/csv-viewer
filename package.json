@@ -4,13 +4,14 @@
   "description": "",
   "main": "main.js",
   "scripts": {
-  "start": "electron ."
+    "start": "electron ."
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "csv-parser": "^3.0.0",
-    "electron": "^33.0.0"
+    "electron": "^33.0.0",
+    "json2csv": "^6.0.0-alpha.2"
   }
 }

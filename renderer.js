@@ -9,10 +9,15 @@ document.getElementById('openFile').addEventListener('click', async () => {
     originalData = [...data]; // Сохраняем оригинальные данные для перезагрузки
     renderTable(data);
     document.getElementById('reloadTable').disabled = false; // Активируем кнопку перезагрузки
+    document.getElementById('saveFile').disabled = false;    // Активируем кнопку сохранения
 });
 
 document.getElementById('reloadTable').addEventListener('click', () => {
     renderTable(originalData); // Перезагружаем таблицу с исходными данными
+});
+
+document.getElementById('saveFile').addEventListener('click', async () => {
+    await ipcRenderer.invoke('save-file-dialog', originalData); // Сохранение файла
 });
 
 function renderTable(data) {
