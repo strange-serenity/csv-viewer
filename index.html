@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSV Viewer</title>
+    <style>
+        tr:hover {
+            background-color: lightgrey;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>CSV Viewer</h1>
+    <button id="openFile">Open CSV File</button>
+    <button id="reloadTable" disabled>Reload Table</button>
+    <p>Click on a row to delete it.</p>
+    <table id="csvTable" border="1">
+        <thead>
+            <tr id="tableHeaders"></tr>
+        </thead>
+        <tbody id="tableBody"></tbody>
+    </table>
+    <script src="renderer.js"></script>
+</body>
+</html>
