@@ -1,19 +1,22 @@
 const { ipcRenderer } = require('electron');
 
+let originalData = []; // Оригинальные данные из CSV
 let currentData = []; // Содержит отредактированные данные
 
 document.getElementById('openFile').addEventListener('click', async () => {
     const data = await ipcRenderer.invoke('open-file-dialog');
     if (!data) return;
 
-    currentData = [...data]; // Сохраняем текущие данные для редактирования
-    renderTable(data);
+    originalData = [...data]; // Сохраняем оригинальные данные
+    currentData = [...data]; // Инициализируем текущие данные для редактирования
+    renderTable(currentData); // Отображаем таблицу
     document.getElementById('reloadTable').disabled = false; // Активируем кнопку перезагрузки
     document.getElementById('saveFile').disabled = false;    // Активируем кнопку сохранения
 });
 
 document.getElementById('reloadTable').addEventListener('click', () => {
-    renderTable(currentData); // Перезагружаем таблицу с текущими данными
+    currentData = [...originalData]; // Восстанавливаем текущие данные из оригинальных
+    renderTable(currentData); // Перезагружаем таблицу
 });
 
 document.getElementById('saveFile').addEventListener('click', async () => {
